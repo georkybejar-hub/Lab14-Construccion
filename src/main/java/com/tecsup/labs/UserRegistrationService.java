@@ -4,27 +4,55 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Servicio corregido con mejores prácticas.
+ * Servicio encargado de registrar usuarios aplicando reglas
+ * de validación simples. Incluye manejo de errores y registro
+ * en memoria.
  */
-public class UserRegistrationService {
+public final class UserRegistrationService {
 
-    // Campo privado con getter
+    /**
+     * Último mensaje de error generado por el servicio.
+     */
     private String lastErrorMessage = "";
 
+    /**
+     * Obtiene el último mensaje de error.
+     *
+     * @return mensaje de error
+     */
     public String getLastErrorMessage() {
         return lastErrorMessage;
     }
 
-    // Lista usando genéricos
+    /**
+     * Lista de usuarios registrados.
+     */
     private final List<String> users = new ArrayList<>();
 
+    /**
+     * Longitud mínima permitida para las contraseñas.
+     */
     private static final int MIN_PASSWORD_LENGTH = 8;
 
+    /**
+     * Constructor del servicio.
+     */
     public UserRegistrationService() {
         System.out.println("Constructor ejecutado");
     }
 
-    public boolean registerUser(String username, String password, String email) {
+    /**
+     * Registra un usuario verificando reglas básicas.
+     *
+     * @param username nombre del usuario
+     * @param password contraseña del usuario
+     * @param email    correo electrónico
+     * @return true si se registra correctamente
+     */
+    public boolean registerUser(
+            final String username,
+            final String password,
+            final String email) {
 
         if (username == null || username.trim().isEmpty()) {
             lastErrorMessage = "El nombre de usuario está vacío.";
@@ -41,8 +69,8 @@ public class UserRegistrationService {
             return false;
         }
 
-        // Validación mejorada de email
-        if (email == null || !email.contains("@") || !email.contains(".")) {
+        if (email == null || !email.contains("@")
+                || !email.contains(".")) {
             lastErrorMessage = "El correo electrónico no es válido.";
             return false;
         }
@@ -61,20 +89,39 @@ public class UserRegistrationService {
         return true;
     }
 
-    private void saveUser(String username, String password, String email) {
+    /**
+     * Guarda el usuario en memoria simulando una base de datos.
+     *
+     * @param username nombre
+     * @param password contraseña
+     * @param email    correo
+     */
+    private void saveUser(
+            final String username,
+            final String password,
+            final String email) {
+
         if ("error".equals(username)) {
-            throw new IllegalArgumentException("Nombre de usuario no permitido.");
+            throw new IllegalArgumentException(
+                    "Nombre de usuario no permitido.");
         }
+
         users.add(username);
     }
 
-    // Método renombrado y optimizado
-    public int contarCaracteres(String s) {
-        if (s == null) {
+    /**
+     * Cuenta los caracteres de una cadena.
+     *
+     * @param text texto a evaluar
+     * @return cantidad de caracteres o -1 si es null
+     */
+    public int contarCaracteres(final String text) {
+        if (text == null) {
             return -1;
         }
+
         StringBuilder sb = new StringBuilder();
-        for (char c : s.toCharArray()) {
+        for (char c : text.toCharArray()) {
             sb.append(c);
         }
         return sb.length();
